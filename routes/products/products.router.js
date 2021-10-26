@@ -24,4 +24,42 @@ router.get('/:id', (req, res) => {
     res.send(`enviaste: ${id}`)
 });
 
+router.post('/', (req, res) => {
+    const body = req.body;
+    res.json({
+        message: 'created',
+        data: body
+    })
+});
+
+router.patch('/:id', (req, res) => {
+    const body = req.body;
+    const id = req.params.id;
+    res.json({
+        message: 'updated',
+        id,
+        data: body
+    })
+});
+
+router.put('/:id', (req, res) => {
+    const body = req.body;
+    const id = req.params.id;
+    res.json({
+        message: 'updated',
+        id,
+        data: body
+    })
+});
+
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    res.json({
+        message: 'deleted',
+        id,
+    })
+});
+
+
+
 module.exports = router;
