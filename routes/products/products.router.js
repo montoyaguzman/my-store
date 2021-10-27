@@ -21,12 +21,16 @@ router.get('/filter', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const { id } = req.params;
-    res.send(`enviaste: ${id}`)
+    if(id === '999') {
+        res.status(404).json({ message: 'not found' })
+    } else {
+        res.status(200).send(`enviaste: ${id}`);
+    }
 });
 
 router.post('/', (req, res) => {
     const body = req.body;
-    res.json({
+    res.status().json({
         message: 'created',
         data: body
     })
