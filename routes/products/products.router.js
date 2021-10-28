@@ -4,19 +4,30 @@ const ProductsServices = require('../../services/products/products.services');
 
 const serviceProduct = new ProductsServices();
 
-router.get('/', (req, res) => {
-    const products = serviceProduct.find();
-    res.json(products);
+router.get('/', async (req, res) => {
+    try {
+        const products = await serviceProduct.find();
+        res.json(products);
+    } catch (error){
+        res.status(404).json({
+            message: error.message
+        });
+    }
 });
 
 router.get('/filter', (req, res) => {
     res.send('yo soy /filter')
 });
 
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
-    const product = serviceProduct.findOne(id);
-    res.json(product);
+router.get('/:id', (req, res, error) => {
+    try {
+        const { id } = req.params;
+        const product = serviceProduct.findOne(id);
+        res.json(product);
+    } catch (error) {
+        next(error);
+    }
+    
 });
 
 router.post('/', (req, res) => {
