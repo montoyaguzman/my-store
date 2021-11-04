@@ -1,4 +1,5 @@
 const faker = require('faker');
+const boom = require('@hapi/boom');
 
 class ProductsServices {
 
@@ -10,10 +11,12 @@ class ProductsServices {
     generate() {
         const size = 100;
         for(let i = 0; i <= size; i++) {
+            let visible = (i % 2 === 0);
             const item = {
                 id: faker.datatype.uuid(),
                 name: faker.commerce.productName(),
-                price: faker.commerce.price()
+                price: faker.commerce.price(),
+                isVisible: faker.datatype.boolean(),
             }
             this.products.push(item);
         }
@@ -54,10 +57,13 @@ class ProductsServices {
     delete(id) {
         const index = this.products.findIndex(item => item.id === id)
         if(index === -1) {
-            throw new Error('product not found')
+            throw boom.notFound('product not found');
+        }
+        if(!this.products[index].isVisible) {
+            throw boom.forbidden('forbidden product');
         }
         this.products.splice(index, 1);
-        return { id };
+        return id;
     }
 
 }

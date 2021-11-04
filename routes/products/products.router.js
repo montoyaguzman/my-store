@@ -53,10 +53,14 @@ router.put('/:id', (req, res) => {
     res.json({ message: 'updated', id, data: body })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
     const id = req.params.id;
-    const editedId = serviceProduct.delete(id);
-    res.json({ message: 'deleted', editedId, })
+    try {
+        const editedId = serviceProduct.delete(id);
+        res.json({ message: 'deleted', editedId, })
+    } catch(error) {
+        next(error);
+    }
 });
 
 

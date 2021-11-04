@@ -12,4 +12,13 @@ function handleError(err, req, res, next) {
     });
 }
 
-module.exports = { errorLog, handleError }
+function boomErrorHandler(err, req, res, next) {
+    if (err.isBoom) {
+      const { output } = err;
+      res.status(output.statusCode).json(output.payload);
+    }
+    next(err);
+}
+  
+
+module.exports = { errorLog, handleError, boomErrorHandler }
